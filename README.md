@@ -2,7 +2,7 @@
 
 ## Creadores / Equipo
 * Francisco Javier Bernal Calvo
-* Diego Alejandro Torres Salas
+* Victoria Vargas Encinas
 * Joaquín Dávila Arenas
 
 ## Descripción
