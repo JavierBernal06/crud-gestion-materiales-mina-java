@@ -42,4 +42,4 @@ Aplicación Java orientada a la administración, trazabilidad y control de inven
 4. Iniciar sesión con las credenciales de administrador (`admin` / `admin123`).
 
 ## Imágenes
-![Pantalla o reporte del proyecto](Reporte_Inventario_1764747345260.pdf)
+![Pantalla](inicio.png)
