@@ -1,0 +1,60 @@
+-- 1. CREACIÓN DE LA BASE DE DATOS
+CREATE DATABASE IF NOT EXISTS GestionMina;
+USE GestionMina;
+
+-- 2. LIMPIEZA (Por si se ejecuta varias veces)
+DROP TABLE IF EXISTS expediciones;
+DROP TABLE IF EXISTS materiales;
+DROP TABLE IF EXISTS usuarios;
+
+-- 3. TABLA DE USUARIOS
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_completo VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    rol ENUM('ADMINISTRADOR', 'EMPLEADO') NOT NULL
+);
+
+-- 4. TABLA DE MATERIALES
+CREATE TABLE materiales (
+    id_material INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    unidad_medida VARCHAR(20) NOT NULL,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    cantidad_stock DECIMAL(10, 2) DEFAULT 0.0
+);
+
+-- 5. TABLA DE EXPEDICIONES
+CREATE TABLE expediciones (
+    id_expedicion INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_material INT NOT NULL,
+    cantidad_encontrada DECIMAL(10, 2) NOT NULL,
+    ubicacion VARCHAR(150),
+    fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valor_total DECIMAL(15, 2),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_material) REFERENCES materiales(id_material)
+);
+
+-- 6. USUARIO ADMINISTRADOR POR DEFECTO
+INSERT INTO usuarios (nombre_completo, username, password, rol) 
+VALUES ('Administrador Principal', 'admin', 'admin123', 'ADMINISTRADOR');
+
+-- 7. MATERIAL DE PRUEBA
+INSERT INTO materiales (nombre, unidad_medida, precio_unitario, cantidad_stock)
+VALUES ('Oro Bruto', 'gramos', 1250.00, 0);
+
+-- ==========================================================
+-- 8. CONFIGURACIÓN DE CONEXIÓN PARA EL JAR (IMPORTANTE)
+-- ==========================================================
+
+-- Crea el usuario que tu código Java está buscando
+CREATE USER IF NOT EXISTS 'usuario_mina'@'localhost' IDENTIFIED BY 'password123';
+
+-- Le da permisos SOLO sobre esta base de datos
+GRANT ALL PRIVILEGES ON GestionMina.* TO 'usuario_mina'@'localhost';
+
+-- Guarda los cambios de permisos
+FLUSH PRIVILEGES;
